@@ -1,13 +1,12 @@
 import React from "react";
 import Feed from "./Feed";
 import Header from "./Header";
-import Search from "./Search";
 import Sidebar from "./Sidebar";
 import Stories from "./Stories";
 
 const Layout = () => (
   <>
-    <div className="flex flex-row min-h-screen ">
+    {/* <div className="flex flex-row min-h-screen ">
       <Sidebar />
       <div className="p-6 w-full">
         <main className="p-6 rounded-3xl main flex flex-col flex-grow -ml-64 md:ml-0 transition-all duration-150 ease-in bg-gray-100">
@@ -20,7 +19,7 @@ const Layout = () => (
           </div>
         </main>
       </div>
-    </div>
+    </div> */}
   </>
 );
 
