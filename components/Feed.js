@@ -1,8 +1,8 @@
 import React from "react";
-import Stories from "./Stories";
+import Posts from "./Posts";
 
 const Feed = () => {
-  return <div className="grid-cols-3 gap-3 p-6"></div>;
+  return <Posts />;
 };
 
 export default Feed;

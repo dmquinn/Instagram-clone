@@ -16,11 +16,11 @@ const Layout = () => (
             <Stories />
 
             <h1 className="font-bold text-2xl text-gray-700">Feed</h1>
+            <Feed />
           </div>
         </main>
       </div>
     </div>
-    <Feed />
   </>
 );
 
