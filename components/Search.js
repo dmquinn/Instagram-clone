@@ -2,7 +2,7 @@ import React from "react";
 
 const Search = () => {
   return (
-    <form action="#">
+    <form action="#" className="px-12">
       <div className="hidden md:flex relative">
         <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
           <svg
@@ -22,7 +22,7 @@ const Search = () => {
           id="search"
           type="text"
           name="search"
-          className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-20 rounded-full w-full h-10 focus:outline-red-300 "
+          className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-20 rounded-lg w-full h-10 focus:outline-red-300 bg-gray-200"
           placeholder="Search..."
         />
       </div>
