@@ -1,6 +1,9 @@
 import React from "react";
 
-const Search = () => {
+const Search = ({ users }) => {
+  const handleChange = () => {
+    console.log("changed");
+  };
   return (
     <form action="#" className="px-12">
       <div className="hidden md:flex relative">
@@ -22,8 +25,9 @@ const Search = () => {
           id="search"
           type="text"
           name="search"
-          className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-20 rounded-lg w-full h-10 focus:outline-red-300 bg-gray-200"
+          className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-20 rounded-lg w-full h-10"
           placeholder="Search..."
+          onChange={handleChange}
         />
       </div>
       <div className="flex md:hidden">
