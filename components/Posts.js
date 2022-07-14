@@ -20,12 +20,11 @@ const posts = [
   },
 ];
 const Posts = () => {
-  console.log(posts);
   return (
     <div className="grid-cols-3 gap-2">
       {posts &&
         posts.map((post) => {
-          <Post username={post.username} />;
+          return <Post post={post} key={post.id} />;
         })}{" "}
     </div>
   );

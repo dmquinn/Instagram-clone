@@ -1,55 +1,56 @@
 import React from "react";
 import Search from "./Search";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBell,
-  faPaperPlane,
-  faHouse,
-} from "@fortawesome/fontawesome-free-regular";
-import Head from "next/head";
-import { config, dom } from "@fortawesome/fontawesome-svg-core";
-import { useSession } from "next-auth/react";
+  PlusCircleIcon,
+  HomeIcon,
+  UserGroupIcon,
+  HeartIcon,
+  PaperAirplaneIcon,
+  MenuIcon,
+} from "@heroicons/react/outline";
+import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
-config.autoAddCss = false;
+// config.autoAddCss = false;
 
 const Header = ({ users }) => {
   const { data: session } = useSession();
 
   return (
-    <>
+    <div className="border-b bg-white sticky top-0 z-50 py-4">
       {" "}
-      <Head>
-        <style>{dom.css()}</style>
-      </Head>
-      <div className="flex items-center justify-center">
-        <div>
+      <div className="flex justify-between max-w-6xl mx-5 lg:mx-auto">
+        <div className="relative hidden lg:inline-grid items-center">
           <span className="logo">Mazenta</span>
         </div>
         <Search users={users} />
-        <div className="items-center text-gray-800">
-          {session?.user?.image ? (
-            <div className="px-6 flex items-center">
-              {" "}
-              <Image
-                src={session?.user.image}
-                alt=""
-                height={20}
-                width={20}
-                className="rounded-full"
-              />
+
+        <div className="flex items-center justify-end space-x-4">
+          <HomeIcon className="navBtn" />
+          <MenuIcon className="navBtn md:hidden" />
+          {session ? (
+            <div className="hidden md:flex items-center justify-end space-x-4">
+              <PaperAirplaneIcon className="navBtn" />
+              <PlusCircleIcon className="navBtn" />
+              <UserGroupIcon className="navBtn" />
+              <HeartIcon className="navBtn" />
+              <div className="px-6 flex items-center">
+                {" "}
+                <Image
+                  onClick={signOut}
+                  src={session?.user.image}
+                  alt=""
+                  height={25}
+                  width={25}
+                  className="rounded-full"
+                />
+              </div>
             </div>
           ) : (
-            <button>Sign In</button>
+            <button onClick={signIn}>Sign In</button>
           )}
-          <FontAwesomeIcon icon={faBell} />
-          <FontAwesomeIcon icon={faHouse} />
-          <FontAwesomeIcon icon={faPaperPlane} className="px-6 mr-6" />{" "}
-          <button className="bg-gradient-to-r from-orange-500 to-pink-500 hover:bg-blue-700 text-white p-3 font-bold px-8 rounded-full shadow-2xl">
-            + Create Post
-          </button>{" "}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

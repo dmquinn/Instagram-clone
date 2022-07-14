@@ -4,7 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
-
+@layer components {
+  .navBtn, .btn {
+    height: 24px;
+  }
+}
 
 html,
 body {
