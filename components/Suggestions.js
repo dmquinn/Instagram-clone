@@ -32,7 +32,7 @@ const Suggestions = ({ users }) => {
               {extraInfo[Math.floor(Math.random() * extraInfo.length)]}
             </h3>
           </div>
-          <button className="text-blue-400 text-xs font-semibold">
+          <button className="text-blue-400 text-xs font-semibold ">
             Follow
           </button>
         </div>
