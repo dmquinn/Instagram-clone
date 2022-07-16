@@ -6,7 +6,7 @@ const Story = ({ suggestion }) => {
     <div className="">
       <div className="border-2 border-red-500 rounded-full h-16 w-16 p-[2px]">
         <img
-          src={suggestion.avatar}
+          src={suggestion.image}
           alt="Picture of the author"
           className="rounded-full w-16 h-16 object-cover"
         />

@@ -7,23 +7,27 @@ import Modal from "../components/Modal";
 export default function Home() {
   const [users, setUsers] = useState([]);
 
-  // const fetcher = async () => {
-  //   const res = await fetch("https://reqres.in/api/users?per_page=12");
-  //   const json = res.json();
-  //   const userResult = json.data;
-
-  //   setUsers(
-  //     userResult.map((user) => {
-  //       return {
-  //         isActive: Math.random() < 0.5,
-  //         ...user,
-  //       };
-  //     })
-  //   );
-  // };
-  // useEffect(() => {
-  //   fetcher();
-  // }, []);
+  const fetcher = async () => {
+    fetch("https://dummyjson.com/users")
+      .then((response) => {
+        if (response.status >= 200 && response.status <= 299) {
+          return response.json();
+        } else {
+          throw Error(response.statusText);
+        }
+      })
+      .then((jsonResponse) => {
+        setUsers(jsonResponse.users);
+      })
+      .catch((error) => {
+        // Handle the error
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    fetcher();
+    console.log(users);
+  }, []);
   return (
     <div>
       <Head>

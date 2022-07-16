@@ -1,9 +1,7 @@
 import React from "react";
 
 const Search = ({ users }) => {
-  const handleChange = () => {
-    console.log("changed");
-  };
+  const handleChange = () => {};
   return (
     <form action="#" className="px-12">
       <div className="hidden md:flex relative">

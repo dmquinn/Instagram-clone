@@ -8,7 +8,6 @@ const Suggestions = ({ users }) => {
       return user;
     });
     setSuggestions(suggestions);
-    console.log(suggestions);
   }, []);
   return (
     <div className="mt-4 ml-10">
