@@ -3,6 +3,7 @@ import Feed from "../components/Feed";
 import Header from "../components/Header";
 import { useState, useEffect } from "react";
 import Modal from "../components/Modal";
+import { userImgs } from "../data/userData";
 
 export default function Home() {
   const [users, setUsers] = useState([]);
@@ -17,16 +18,21 @@ export default function Home() {
         }
       })
       .then((jsonResponse) => {
-        setUsers(jsonResponse.users);
+        setUsers(
+          jsonResponse.users.map((user, i) => {
+            return {
+              avatar: userImgs[i],
+              ...user,
+            };
+          })
+        );
       })
       .catch((error) => {
-        // Handle the error
         console.log(error);
       });
   };
   useEffect(() => {
     fetcher();
-    console.log(users);
   }, []);
   return (
     <div>

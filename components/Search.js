@@ -23,7 +23,7 @@ const Search = ({ users }) => {
           id="search"
           type="text"
           name="search"
-          className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-20 rounded-lg w-full h-10"
+          className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-20 rounded-lg w-full h-9 bg-gray-200"
           placeholder="Search..."
           onChange={handleChange}
         />

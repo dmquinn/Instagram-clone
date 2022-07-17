@@ -3,15 +3,18 @@ import React from "react";
 
 const Story = ({ suggestion }) => {
   return (
-    <div className="">
-      <div className="border-2 border-red-500 rounded-full h-16 w-16 p-[2px]">
+    <div className="max-w-[70px]">
+      <div className="border border-gray-500 rounded-full h-16 w-16 items-center">
         <img
-          src={suggestion.image}
+          src={suggestion.avatar}
           alt="Picture of the author"
-          className="rounded-full w-16 h-16 object-cover"
+          className="rounded-full  h-[56px] w-[56px] object-cover mt-[3px] ml-[3px]"
         />
       </div>
-      <h1 className="truncate text-center">{suggestion.first_name}</h1>
+      <h1 className="text-center truncate">
+        {suggestion.firstName}
+        {suggestion.lastName}
+      </h1>
     </div>
   );
 };

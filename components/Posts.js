@@ -23,8 +23,8 @@ const Posts = () => {
   return (
     <div className="grid-cols-3 gap-2">
       {posts &&
-        posts.map((post) => {
-          return <Post post={post} key={post.id} />;
+        posts.map((post, i) => {
+          return <Post post={post} key={i} />;
         })}{" "}
     </div>
   );

@@ -22,7 +22,7 @@ const Header = ({ users }) => {
   return (
     <div className="border-b bg-white sticky top-0 z-50 py-4">
       {" "}
-      <div className="flex justify-between max-w-6xl mx-5 lg:mx-auto">
+      <div className="flex justify-between max-w-5xl mx-5 lg:mx-auto">
         <div
           className="relative hidden lg:inline-grid items-center"
           onClick={() => router.push("/")}
