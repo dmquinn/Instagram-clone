@@ -3,11 +3,14 @@ import React, { useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { filterState } from "../atoms/filterState";
 import { modalState } from "../atoms/modalAtom";
+import Filters from "./imageEditor/components/Filters";
 
 const Modal = () => {
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
   const [image, setImage] = useState(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [mainFilter, setMainFilter] = useState("");
+
   const filePickerRef = useRef();
 
   const handleChange = (e) => {
@@ -50,14 +53,17 @@ const Modal = () => {
                 )}
               </div>
 
-              <div className="grid grid-cols-5">
-                <div className={filtersOpen ? "col-span-3" : "col-span-5"}>
-                  <div className="flex justify-center">
+              <div className="grid grid-cols-5 h-full">
+                <div
+                  className={filtersOpen ? "col-span-3 h-full" : "col-span-5"}
+                >
+                  <div className="flex justify-center min-h-[200px]">
                     {image ? (
-                      <img
-                        src={image}
-                        alt=""
-                        className="rounded-b-lg h-full object-cover"
+                      <div
+                        style={{
+                          backgroundImage: `url(${image})`,
+                        }}
+                        className="rounded-b-lg min-h-full w-full bgImg"
                       />
                     ) : (
                       <img
@@ -82,11 +88,16 @@ const Modal = () => {
                     </button>
                   )}
                 </div>
-                {filtersOpen ? (
-                  <div className="col-span-2 filtersTab active"></div>
-                ) : (
-                  <div className="filtersTab"></div>
-                )}
+
+                <div
+                  className={
+                    filtersOpen
+                      ? "col-span-2 filtersTab active bg-blue-200"
+                      : "filtersTab col-span-2"
+                  }
+                >
+                  <Filters />
+                </div>
               </div>
             </div>
           </Transition.Child>

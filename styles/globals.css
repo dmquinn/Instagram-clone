@@ -40,9 +40,22 @@ body {
 }
 .filtersTab {
   width: 0%!important;
-  transition: 2s!important;
+    animation: expand 0.5s linear !important;
+ 
 }
-.filtersTab.active {
-  width: 100%!important;
-transition: 2s!important;
+.filtersTab:active {
+  animation: 3s ease-in 1s infinite reverse both running expand!important;
+}
+.bgImg {
+  background-size: cover!important;
+}
+@keyframes expand {
+  from {
+    
+    width: 0%!important;
+  }
+
+  to {
+    width: 100%!important;
+  }
 }

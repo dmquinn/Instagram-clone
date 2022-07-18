@@ -23,6 +23,7 @@ const ImageCard = ({
       {imageObjects.map((card, i) => {
         return (
           <div
+            key={i}
             className={card.className}
             onClick={(e) => handleClick(e)}
             style={{ padding: "20px", cursor: "pointer" }}
