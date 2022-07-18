@@ -10,7 +10,7 @@ import {
 
 const Post = ({ post }) => {
   return (
-    <div className="bg-white my-7 border rounded-sm">
+    <div className="bg-white my-7 border rounded-lg">
       <div className="flex items-center p-5">
         <img
           src={post.userImg}

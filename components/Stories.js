@@ -23,7 +23,7 @@ const responsive = {
 };
 const Stories = ({ users }) => {
   return (
-    <div className="border border-lg">
+    <div className="border p-5 rounded-lg">
       <Carousel responsive={responsive}>
         {!!users &&
           users.map((suggestion, i) => (

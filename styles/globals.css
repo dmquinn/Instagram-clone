@@ -5,7 +5,9 @@
 @tailwind utilities;
 
 @layer components {
-  .navBtn, .btn {
+
+  .navBtn,
+  .btn {
     height: 24px;
   }
 }
@@ -24,4 +26,23 @@ body {
 .logo {
   font-family: 'Leckerli One', cursive !important;
   font-size: 20px;
+}
+
+.react-multiple-carousel__arrow {
+  z-index: 3 !important;
+  transform: scale(0.6);
+  background-color: white !important;
+ box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.282);
+}
+
+.react-multiple-carousel__arrow:before {
+  color: black !important;
+}
+.filtersTab {
+  width: 0%!important;
+  transition: 2s!important;
+}
+.filtersTab.active {
+  width: 100%!important;
+transition: 2s!important;
 }
