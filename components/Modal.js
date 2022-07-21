@@ -40,8 +40,8 @@ const Modal = () => {
             leaveTo="opacity-0"
           >
             <Dialog.Overlay className="fixed inset-0 bg-black opacity-70 " />
-            <div className="relative bg-white rounded-lg w-screen md:max-w-2xl mx-auto mt-[100px] shadow-lg">
-              <div className="flex p-3 justify-center border-b">
+            <div className="relative bg-white rounded-lg w-screen md:max-w-2xl mx-auto mt-[90px] h-400px shadow-lg">
+              <div className="flex p-3 justify-center border-b h-full">
                 <h1 className="font-bold">Create new Post</h1>
                 {image && (
                   <h1
@@ -53,11 +53,11 @@ const Modal = () => {
                 )}
               </div>
 
-              <div className="grid grid-cols-5 h-full">
+              <div className="grid grid-cols-5 h-37">
                 <div
                   className={filtersOpen ? "col-span-3 h-full" : "col-span-5"}
                 >
-                  <div className="flex justify-center min-h-[200px]">
+                  <div className="flex justify-center min-h-[300px]">
                     {image ? (
                       <div
                         style={{

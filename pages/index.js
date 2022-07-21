@@ -21,6 +21,7 @@ export default function Home() {
         setUsers(
           jsonResponse.users.map((user, i) => {
             return {
+              hasStory: Math.random() < 0.5,
               avatar: userImgs[i],
               ...user,
             };
@@ -33,6 +34,7 @@ export default function Home() {
   };
   useEffect(() => {
     fetcher();
+    console.log(users);
   }, []);
   return (
     <div>

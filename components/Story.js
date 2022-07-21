@@ -4,7 +4,13 @@ import React from "react";
 const Story = ({ suggestion }) => {
   return (
     <div className="max-w-[70px]">
-      <div className="border border-gray-500 rounded-full h-16 w-16 items-center">
+      <div
+        className={
+          suggestion.hasStory
+            ? "border border-2 border-red-500 rounded-full h-16 w-16 items-center"
+            : "border border-gray-500 rounded-full h-16 w-16 items-center"
+        }
+      >
         <img
           src={suggestion.avatar}
           alt="Picture of the author"
