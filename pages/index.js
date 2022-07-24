@@ -3,6 +3,7 @@ import Feed from "../components/Feed";
 import Header from "../components/Header";
 import { useState, useEffect } from "react";
 import Modal from "../components/Modal";
+import Draggable from "../components/Draggable";
 import { userImgs } from "../data/userData";
 
 export default function Home() {

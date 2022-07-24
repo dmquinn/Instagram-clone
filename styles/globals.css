@@ -48,6 +48,8 @@ body {
 }
 .bgImg {
   background-size: cover!important;
+  height: 500px!important;
+  width: 500px!important;
 }
 @keyframes expand {
   from {

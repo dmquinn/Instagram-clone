@@ -22,11 +22,13 @@ const responsive = {
   },
 };
 const Stories = ({ users }) => {
+  const sortedUsers = users.sort((a, b) => (a.hasStory < b.hasStory ? 1 : -1));
+
   return (
     <div className="border p-5 rounded-lg">
       <Carousel responsive={responsive}>
-        {!!users &&
-          users.map((suggestion, i) => (
+        {!!sortedUsers &&
+          sortedUsers.map((suggestion, i) => (
             <Story key={i} suggestion={suggestion} />
           ))}
       </Carousel>{" "}
