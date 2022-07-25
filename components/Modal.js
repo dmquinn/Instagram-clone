@@ -1,27 +1,74 @@
 import { Dialog, Transition, Fragment } from "@headlessui/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { filterState } from "../atoms/filterState";
 import { modalState } from "../atoms/modalAtom";
 import Filters from "./imageEditor/components/Filters";
+import { db, storage } from "../firebase/firebase";
+import { useSession } from "next-auth/react";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  doc,
+  updateDoc,
+} from "@firebase/firestore";
+import { ref, getDownloadURL, uploadBytesResumable } from "@firebase/storage";
 
 const Modal = () => {
+  const { data: session } = useSession();
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
-  const [image, setImage] = useState(null);
+  const [file, setFile] = useState(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [mainFilter, setMainFilter] = useState("");
+  const [loading, setLoading] = useState(false);
+  const filePickerRef = useRef(null);
+  const captionRef = useRef(null);
 
-  const filePickerRef = useRef();
+  const uploadPost = async () => {
+    console.log(session.user, captionRef.current.value);
+    if (loading) return;
+    setLoading(true);
+    if (!file) {
+      alert("Please upload an image first!");
+    }
+
+    const docRef = await addDoc(collection(db, "posts"), {
+      username: session.user.name,
+      caption: captionRef.current.value,
+      profileImg: session.user.image,
+      timestamp: serverTimestamp(),
+    });
+
+    const storageRef = ref(storage, `posts/${docRef.id}/image`);
+
+    // progress can be paused and resumed. It also exposes progress updates.
+    // Receives the storage reference and the file to upload.
+    await uploadBytesResumable(storageRef, file, "data_url").then(
+      async (snapshot) => {
+        const downloadURL = await getDownloadURL(storageRef);
+        await updateDoc(doc(db, "posts", docRef.id), {
+          image: downloadURL,
+        });
+      }
+    );
+    setModalOpen(false);
+    setLoading(false);
+    setFile(null);
+  };
 
   const handleChange = (e) => {
     if (e.target.files.length) {
-      setImage(URL.createObjectURL(e.target.files[0]));
+      console.log(e.target.files[0]);
+
+      setFile(e.target.files[0]);
     }
   };
   const handleOpen = (e) => {
     filtersOpen ? setFiltersOpen(false) : setFiltersOpen(true);
     console.log(filtersOpen);
   };
+
   return (
     <Transition.Root show={modalOpen} as={Fragment}>
       <Dialog
@@ -45,7 +92,7 @@ const Modal = () => {
                 <h1 className="font-semibold w-full h-9 border-b">
                   Create new Post
                 </h1>
-                {image && (
+                {file && (
                   <h1
                     onClick={handleOpen}
                     className="cursor-pointer font-bold text-blue-400 absolute right-10"
@@ -59,12 +106,12 @@ const Modal = () => {
                 <div
                   className={filtersOpen ? "col-span-3 h-full" : "col-span-5"}
                 >
-                  <div className="h-20 w-full">
+                  <div className="grid-">
                     <div className="flex justify-center min-h-[300px]">
-                      {image ? (
+                      {file ? (
                         <div
                           style={{
-                            backgroundImage: `url(${image})`,
+                            backgroundImage: `url(${file})`,
                           }}
                           className="rounded-b-lg min-h-[500px] w-full bgImg"
                         />
@@ -83,12 +130,24 @@ const Modal = () => {
                     ref={filePickerRef}
                     onChange={handleChange}
                   />
-                  {!image && (
+                  <input
+                    type="text"
+                    placeholder="Add Caption..."
+                    ref={captionRef}
+                  />
+                  {!file ? (
                     <button
                       onClick={() => filePickerRef.current.click()}
                       className="bg-blue-400 px-3 py-1 rounded-md text-white text-sm font-bold mb-20"
                     >
                       Select From Computer
+                    </button>
+                  ) : (
+                    <button
+                      onClick={uploadPost}
+                      className="bg-blue-400 px-3 py-1 rounded-md text-white text-sm font-bold mb-20"
+                    >
+                      {loading ? "Uploading..." : "Upload Post!"}
                     </button>
                   )}
                 </div>

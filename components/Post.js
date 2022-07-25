@@ -9,18 +9,19 @@ import {
 } from "@heroicons/react/outline";
 
 const Post = ({ post }) => {
+  console.log(post);
   return (
     <div className="bg-white my-7 border rounded-lg">
       <div className="flex items-center p-5">
         <img
-          src={post.userImg}
+          src={post.profileImg}
           alt={post.username}
           className="rounded-full h-12 w-12 object-cover p-1 mr-3"
         />
         <p className="flex-1 font-bold">{post.username}</p>
         <DotsHorizontalIcon className="h-5" />
       </div>
-      <img className="object-cover w-full" alt={post.title} src={post.img} />
+      <img className="object-cover w-full" alt={post.title} src={post.image} />
       <div className="flex justify-between px-4 pt-4">
         {" "}
         <div className="flex space-x-4">
