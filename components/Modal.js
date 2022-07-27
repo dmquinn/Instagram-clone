@@ -13,6 +13,7 @@ import {
   doc,
   updateDoc,
 } from "@firebase/firestore";
+import Draggable from "./Draggable";
 import { ref, getDownloadURL, uploadBytesResumable } from "@firebase/storage";
 
 const Modal = () => {
@@ -61,7 +62,10 @@ const Modal = () => {
     if (e.target.files.length) {
       console.log(e.target.files[0]);
 
-      setFile(e.target.files[0]);
+      setFile({
+        file: e.target.files[0],
+        display: URL.createObjectURL(e.target.files[0]),
+      });
     }
   };
   const handleOpen = (e) => {
@@ -106,15 +110,10 @@ const Modal = () => {
                 <div
                   className={filtersOpen ? "col-span-3 h-full" : "col-span-5"}
                 >
-                  <div className="grid-">
+                  <div className="h-20 w-full">
                     <div className="flex justify-center min-h-[300px]">
                       {file ? (
-                        <div
-                          style={{
-                            backgroundImage: `url(${file})`,
-                          }}
-                          className="rounded-b-lg min-h-[500px] w-full bgImg"
-                        />
+                        <Draggable image={file.display} />
                       ) : (
                         <img
                           src="https://img.icons8.com/ios/344/image.png/"
@@ -130,24 +129,12 @@ const Modal = () => {
                     ref={filePickerRef}
                     onChange={handleChange}
                   />
-                  <input
-                    type="text"
-                    placeholder="Add Caption..."
-                    ref={captionRef}
-                  />
-                  {!file ? (
+                  {!file && (
                     <button
                       onClick={() => filePickerRef.current.click()}
                       className="bg-blue-400 px-3 py-1 rounded-md text-white text-sm font-bold mb-20"
                     >
                       Select From Computer
-                    </button>
-                  ) : (
-                    <button
-                      onClick={uploadPost}
-                      className="bg-blue-400 px-3 py-1 rounded-md text-white text-sm font-bold mb-20"
-                    >
-                      {loading ? "Uploading..." : "Upload Post!"}
                     </button>
                   )}
                 </div>

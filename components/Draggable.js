@@ -37,19 +37,21 @@ function Draggable({ image }) {
   }, []);
 
   return (
-    <div style={{ overflow: "hidden", width: "680px", height: "555px" }}>
-      <div
+    <div style={{ overflow: "hidden", width: "680px", height: "456px" }}>
+      <img
+        src={image}
         style={{
           position: "relative",
           left: position[0],
           top: position[1],
-          width: "120%",
-          height: "120%",
-          backgroundImage: `url(${image})`,
-          //   backgroundSize: "cover",
+          minWidth: "700px",
+          minHeight: "456px",
+          // backgroundImage: `url(${image})`,
+          onjectFit: "cover",
+          backgroundRepeat: "no-repeat",
         }}
         onMouseDown={() => setIsDragging(true)}
-      ></div>
+      ></img>
     </div>
   );
 }
