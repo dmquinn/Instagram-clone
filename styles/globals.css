@@ -39,12 +39,12 @@ body {
   color: black !important;
 }
 .filtersTab {
-  width: 0%!important;
-    animation: expand 0.5s linear !important;
+  width: 100%!important;
+  transition: 0.5s linear !important;
  
 }
 .filtersTab:active {
-  animation: 3s ease-in 1s infinite reverse both running expand!important;
+  transition: 3s ease-in 1s!important;
 }
 .bgImg {
   background-size: cover!important;

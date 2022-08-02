@@ -6,9 +6,10 @@ const MiniProfile = () => {
   return (
     <div className="flex items-center justify-between ml-10">
       <img
-        src={session?.user?.image}
+        src={session?.user.image}
         alt=""
         className="border rounded-full h-16 w-16 p-[2px]"
+        loading="lazy"
       />
       <div className="flex-1 mx-4">
         <h2 className="font-bold">{session?.user?.username}</h2>

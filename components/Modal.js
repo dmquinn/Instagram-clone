@@ -43,8 +43,6 @@ const Modal = () => {
 
     const storageRef = ref(storage, `posts/${docRef.id}/image`);
 
-    // progress can be paused and resumed. It also exposes progress updates.
-    // Receives the storage reference and the file to upload.
     await uploadBytesResumable(storageRef, file, "data_url").then(
       async (snapshot) => {
         const downloadURL = await getDownloadURL(storageRef);
@@ -106,10 +104,8 @@ const Modal = () => {
                 )}
               </div>
 
-              <div className="absolute top-11 grid grid-cols-5 h-full">
-                <div
-                  className={filtersOpen ? "col-span-3 h-full" : "col-span-5"}
-                >
+              <div className="absolute top-11 h-full flex">
+                <div>
                   <div className="h-20 w-full">
                     <div className="flex justify-center min-h-[300px]">
                       {file ? (
@@ -139,15 +135,21 @@ const Modal = () => {
                   )}
                 </div>
 
-                <div
-                  className={
-                    filtersOpen
-                      ? "col-span-2 filtersTab active bg-blue-200"
-                      : "filtersTab col-span-2"
-                  }
-                >
-                  <Filters />
-                </div>
+                {filtersOpen && (
+                  <div className="w-full h-full bg-green-200">
+                    <Transition
+                      as={Fragment}
+                      enter="ease-out duration-300"
+                      enterFrom="width-0"
+                      enterTo="width-100"
+                      leave="ease-in duration-200"
+                      leaveFrom="w-100"
+                      leaveTo="w-0"
+                    >
+                      <div className="w-100 h-100 bg-red-400" />
+                    </Transition>
+                  </div>
+                )}
               </div>
             </div>
           </Transition.Child>

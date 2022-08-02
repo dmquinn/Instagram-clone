@@ -5,7 +5,8 @@ const Filters = ({ image, setMainFilter }) => {
     filtersTabOpen ? setFiltersTabOpen(false) : setFiltersTabOpen(true);
   };
   return (
-    <div className="bg-red-400">
+    <div>
+      FILTERS
       <i
         className="fas fa-sliders-h text-gray-500 text-4xl"
         onClick={handleClick}
