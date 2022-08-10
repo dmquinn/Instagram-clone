@@ -13,7 +13,6 @@ import {
   doc,
   updateDoc,
 } from "@firebase/firestore";
-import Draggable from "./Draggable";
 import { ref, getDownloadURL, uploadBytesResumable } from "@firebase/storage";
 
 const Modal = () => {
@@ -27,7 +26,6 @@ const Modal = () => {
   const captionRef = useRef(null);
 
   const uploadPost = async () => {
-    console.log(session.user, captionRef.current.value);
     if (loading) return;
     setLoading(true);
     if (!file) {
@@ -48,6 +46,7 @@ const Modal = () => {
         const downloadURL = await getDownloadURL(storageRef);
         await updateDoc(doc(db, "posts", docRef.id), {
           image: downloadURL,
+          id: storageRef,
         });
       }
     );
@@ -58,17 +57,11 @@ const Modal = () => {
 
   const handleChange = (e) => {
     if (e.target.files.length) {
-      console.log(e.target.files[0]);
-
-      setFile({
-        file: e.target.files[0],
-        display: URL.createObjectURL(e.target.files[0]),
-      });
+      setFile(e.target.files[0]);
     }
   };
   const handleOpen = (e) => {
     filtersOpen ? setFiltersOpen(false) : setFiltersOpen(true);
-    console.log(filtersOpen);
   };
 
   return (
@@ -104,12 +97,19 @@ const Modal = () => {
                 )}
               </div>
 
-              <div className="absolute top-11 h-full flex">
-                <div>
-                  <div className="h-20 w-full">
+              <div className="absolute top-11 grid grid-cols-5 h-full">
+                <div
+                  className={filtersOpen ? "col-span-3 h-full" : "col-span-5"}
+                >
+                  <div className="grid-">
                     <div className="flex justify-center min-h-[300px]">
                       {file ? (
-                        <Draggable image={file.display} />
+                        <div
+                          style={{
+                            backgroundImage: `url(${file})`,
+                          }}
+                          className="rounded-b-lg min-h-[500px] w-full bgImg"
+                        />
                       ) : (
                         <img
                           src="https://img.icons8.com/ios/344/image.png/"
@@ -125,31 +125,37 @@ const Modal = () => {
                     ref={filePickerRef}
                     onChange={handleChange}
                   />
-                  {!file && (
+                  <input
+                    type="text"
+                    placeholder="Add Caption..."
+                    ref={captionRef}
+                  />
+                  {!file ? (
                     <button
                       onClick={() => filePickerRef.current.click()}
                       className="bg-blue-400 px-3 py-1 rounded-md text-white text-sm font-bold mb-20"
                     >
                       Select From Computer
                     </button>
+                  ) : (
+                    <button
+                      onClick={uploadPost}
+                      className="bg-blue-400 px-3 py-1 rounded-md text-white text-sm font-bold mb-20"
+                    >
+                      {loading ? "Uploading..." : "Upload Post!"}
+                    </button>
                   )}
                 </div>
 
-                {filtersOpen && (
-                  <div className="w-full h-full bg-green-200">
-                    <Transition
-                      as={Fragment}
-                      enter="ease-out duration-300"
-                      enterFrom="width-0"
-                      enterTo="width-100"
-                      leave="ease-in duration-200"
-                      leaveFrom="w-100"
-                      leaveTo="w-0"
-                    >
-                      <div className="w-100 h-100 bg-red-400" />
-                    </Transition>
-                  </div>
-                )}
+                <div
+                  className={
+                    filtersOpen
+                      ? "col-span-2 filtersTab active bg-blue-200"
+                      : "filtersTab col-span-2"
+                  }
+                >
+                  <Filters />
+                </div>
               </div>
             </div>
           </Transition.Child>

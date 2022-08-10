@@ -8,9 +8,7 @@ const MainPhoto = ({
   saturation,
   mainOverlay,
 }) => {
-  useEffect(() => {
-    console.log("main", mainOverlay);
-  }, [mainOverlay]);
+  useEffect(() => {}, [mainOverlay]);
   const filterGetter = () => {
     if (
       contrast !== undefined &&
