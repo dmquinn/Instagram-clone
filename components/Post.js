@@ -8,13 +8,18 @@ import {
   PaperAirplaneIcon,
 } from "@heroicons/react/outline";
 import { useSession } from "next-auth/react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../firebase/firebase";
 
 const Post = ({ post }) => {
-  console.log(post);
   const { data: session } = useSession();
   const [comment, setComment] = useState("");
+  console.log(post);
   const sendComment = async (e) => {
     e.preventDefault();
     const commentToSend = comment;
@@ -23,7 +28,7 @@ const Post = ({ post }) => {
     await addDoc(
       collection(db, "posts", post.id, "comments", {
         comment: commentToSend,
-        username: session.user.name,
+        username: session.user.username,
         userImage: session.user.image,
         timestamp: serverTimestamp(),
       })

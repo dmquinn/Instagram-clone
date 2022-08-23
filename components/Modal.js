@@ -1,7 +1,6 @@
 import { Dialog, Transition, Fragment } from "@headlessui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
-import { filterState } from "../atoms/filterState";
 import { modalState } from "../atoms/modalAtom";
 import Filters from "./imageEditor/components/Filters";
 import { db, storage } from "../firebase/firebase";
@@ -20,7 +19,6 @@ const Modal = () => {
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
   const [file, setFile] = useState(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [mainFilter, setMainFilter] = useState("");
   const [loading, setLoading] = useState(false);
   const filePickerRef = useRef(null);
   const captionRef = useRef(null);
@@ -40,13 +38,11 @@ const Modal = () => {
     });
 
     const storageRef = ref(storage, `posts/${docRef.id}/image`);
-
     await uploadBytesResumable(storageRef, file, "data_url").then(
       async (snapshot) => {
         const downloadURL = await getDownloadURL(storageRef);
         await updateDoc(doc(db, "posts", docRef.id), {
           image: downloadURL,
-          id: storageRef,
         });
       }
     );
