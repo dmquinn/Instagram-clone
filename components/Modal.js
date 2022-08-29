@@ -1,65 +1,50 @@
 import { Dialog, Transition, Fragment } from "@headlessui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
+import { filterState } from "../atoms/filterState";
 import { modalState } from "../atoms/modalAtom";
+import Cropper from "react-easy-crop";
 import Filters from "./imageEditor/components/Filters";
-import { db, storage } from "../firebase/firebase";
-import { useSession } from "next-auth/react";
-import {
-  addDoc,
-  collection,
-  serverTimestamp,
-  doc,
-  updateDoc,
-} from "@firebase/firestore";
-import { ref, getDownloadURL, uploadBytesResumable } from "@firebase/storage";
+import getCroppedImg from "./cropImage";
 
 const Modal = () => {
-  const { data: session } = useSession();
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
-  const [file, setFile] = useState(null);
+  const [image, setImage] = useState(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const filePickerRef = useRef(null);
-  const captionRef = useRef(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [zoom, setZoom] = useState(1);
+  const [croppedImage, setCroppedImage] = useState(null);
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
 
-  const uploadPost = async () => {
-    if (loading) return;
-    setLoading(true);
-    if (!file) {
-      alert("Please upload an image first!");
+  const filePickerRef = useRef();
+  const showCroppedImage = useCallback(async () => {
+    try {
+      const croppedImage = await getCroppedImg(image, croppedAreaPixels);
+      console.log("donee", { croppedImage });
+      setImage(croppedImage);
+    } catch (e) {
+      console.error(e);
     }
-
-    const docRef = await addDoc(collection(db, "posts"), {
-      username: session.user.name,
-      caption: captionRef.current.value,
-      profileImg: session.user.image,
-      timestamp: serverTimestamp(),
-    });
-
-    const storageRef = ref(storage, `posts/${docRef.id}/image`);
-    await uploadBytesResumable(storageRef, file, "data_url").then(
-      async (snapshot) => {
-        const downloadURL = await getDownloadURL(storageRef);
-        await updateDoc(doc(db, "posts", docRef.id), {
-          image: downloadURL,
-        });
-      }
-    );
-    setModalOpen(false);
-    setLoading(false);
-    setFile(null);
-  };
+    setFiltersOpen(!filtersOpen);
+  }, [croppedAreaPixels]);
 
   const handleChange = (e) => {
     if (e.target.files.length) {
-      setFile(e.target.files[0]);
+      console.log(
+        "file",
+        e.target.files[0],
+        URL.createObjectURL(e.target.files[0])
+      );
+      setImage(URL.createObjectURL(e.target.files[0]));
     }
   };
   const handleOpen = (e) => {
     filtersOpen ? setFiltersOpen(false) : setFiltersOpen(true);
+    console.log(filtersOpen);
   };
-
   return (
     <Transition.Root show={modalOpen} as={Fragment}>
       <Dialog
@@ -67,7 +52,7 @@ const Modal = () => {
         className="fixed z-[100] inset-0 overflow-y-auto"
         onClose={setModalOpen}
       >
-        <div className="flex items-end justify-center sm:min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div className="justify-center sm:min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -77,83 +62,70 @@ const Modal = () => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 bg-black opacity-70 " />
-            <div className="relative bg-white rounded-lg w-screen md:max-w-2xl mx-auto mt-[90px] h-[500px] shadow-lg">
-              <div className="flex p-3 justify-center border-b h-full">
-                <h1 className="font-semibold w-full h-9 border-b">
-                  Create new Post
-                </h1>
-                {file && (
-                  <h1
-                    onClick={handleOpen}
-                    className="cursor-pointer font-bold text-blue-400 absolute right-10"
-                  >
-                    Next
-                  </h1>
-                )}
-              </div>
+            <Dialog.Overlay className="fixed inset-0 bg-black opacity-70" />
 
-              <div className="absolute top-11 grid grid-cols-5 h-full">
-                <div
-                  className={filtersOpen ? "col-span-3 h-full" : "col-span-5"}
-                >
-                  <div className="grid-">
-                    <div className="flex justify-center min-h-[300px]">
-                      {file ? (
-                        <div
-                          style={{
-                            backgroundImage: `url(${file})`,
-                          }}
-                          className="rounded-b-lg min-h-[500px] w-full bgImg"
-                        />
+            {filtersOpen ? (
+              <div />
+            ) : (
+              <>
+                <div className="relative bg-white rounded-lg w-screen md:max-w-2xl mx-auto mt-[90px] h-[500px] shadow-lg">
+                  <div className="p-3 justify-center content-center border-b h-full items-center">
+                    {" "}
+                    <div className="flex">
+                      {!image ? (
+                        <h1 className="font-semibold w-full h-9 border-b">
+                          Create new Post
+                        </h1>
                       ) : (
+                        <h1 className="font-semibold w-full h-9 border-b">
+                          Crop
+                        </h1>
+                      )}
+                      {image && (
+                        <h1
+                          onClick={showCroppedImage}
+                          className="cursor-pointer font-bold text-blue-400 right-10"
+                        >
+                          Next
+                        </h1>
+                      )}
+                    </div>
+                    {image ? (
+                      <Cropper
+                        image={image}
+                        crop={crop}
+                        zoom={zoom}
+                        aspect={4 / 3}
+                        onCropChange={setCrop}
+                        onCropComplete={onCropComplete}
+                        onZoomChange={setZoom}
+                      />
+                    ) : (
+                      <>
                         <img
                           src="https://img.icons8.com/ios/344/image.png/"
                           alt=""
-                          className="h-20 opacity-80 my-32"
+                          className="h-28 opacity-80 mx-auto mt-24 mb-10"
                         />
-                      )}
-                    </div>
+                        <button
+                          onClick={() => filePickerRef.current.click()}
+                          className="bg-blue-400 px-3 py-1 rounded-md text-white text-sm font-bold mb-20"
+                        >
+                          Select From Computer
+                        </button>
+                      </>
+                    )}
                   </div>
                   <input
                     type="file"
                     hidden
                     ref={filePickerRef}
                     onChange={handleChange}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Add Caption..."
-                    ref={captionRef}
-                  />
-                  {!file ? (
-                    <button
-                      onClick={() => filePickerRef.current.click()}
-                      className="bg-blue-400 px-3 py-1 rounded-md text-white text-sm font-bold mb-20"
-                    >
-                      Select From Computer
-                    </button>
-                  ) : (
-                    <button
-                      onClick={uploadPost}
-                      className="bg-blue-400 px-3 py-1 rounded-md text-white text-sm font-bold mb-20"
-                    >
-                      {loading ? "Uploading..." : "Upload Post!"}
-                    </button>
-                  )}
+                  />{" "}
                 </div>
-
-                <div
-                  className={
-                    filtersOpen
-                      ? "col-span-2 filtersTab active bg-blue-200"
-                      : "filtersTab col-span-2"
-                  }
-                >
-                  <Filters />
-                </div>
-              </div>
-            </div>
+                )
+              </>
+            )}
           </Transition.Child>
 
           <Transition.Child
@@ -166,7 +138,10 @@ const Modal = () => {
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           ></Transition.Child>
         </div>
-      </Dialog>
+      </Dialog>{" "}
+      {filtersOpen && (
+        <Filters image={image} filtersOpen={filtersOpen} setFiltersOpen />
+      )}
     </Transition.Root>
   );
 };
