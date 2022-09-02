@@ -1,5 +1,5 @@
 import { Dialog, Transition, Fragment } from "@headlessui/react";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { filterState } from "../atoms/filterState";
 import { modalState } from "../atoms/modalAtom";
@@ -15,6 +15,7 @@ const Modal = () => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [zoom, setZoom] = useState(1);
   const [croppedImage, setCroppedImage] = useState(null);
+  const [mainFilter, setMainFilter] = useState(null);
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
@@ -45,6 +46,9 @@ const Modal = () => {
     filtersOpen ? setFiltersOpen(false) : setFiltersOpen(true);
     console.log(filtersOpen);
   };
+  useEffect(() => {
+    console.log(filtersOpen);
+  }, [filtersOpen]);
   return (
     <Transition.Root show={modalOpen} as={Fragment}>
       <Dialog
@@ -64,11 +68,9 @@ const Modal = () => {
           >
             <Dialog.Overlay className="fixed inset-0 bg-black opacity-70" />
 
-            {filtersOpen ? (
-              <div />
-            ) : (
+            {!filtersOpen && (
               <>
-                <div className="relative bg-white rounded-lg w-screen md:max-w-2xl mx-auto mt-[90px] h-[500px] shadow-lg">
+                <div className="first relative bg-white rounded-lg w-screen md:max-w-2xl mx-auto mt-[90px] h-[500px] shadow-lg">
                   <div className="p-3 justify-center content-center border-b h-full items-center">
                     {" "}
                     <div className="flex">
@@ -105,7 +107,7 @@ const Modal = () => {
                         <img
                           src="https://img.icons8.com/ios/344/image.png/"
                           alt=""
-                          className="h-28 opacity-80 mx-auto mt-24 mb-10"
+                          className={`${mainFilter} h-28 opacity-80 mx-auto mt-24 mb-10`}
                         />
                         <button
                           onClick={() => filePickerRef.current.click()}
@@ -140,7 +142,12 @@ const Modal = () => {
         </div>
       </Dialog>{" "}
       {filtersOpen && (
-        <Filters image={image} filtersOpen={filtersOpen} setFiltersOpen />
+        <Filters
+          image={image}
+          filtersOpen={filtersOpen}
+          setFiltersOpen
+          setMainFilter={setMainFilter}
+        />
       )}
     </Transition.Root>
   );

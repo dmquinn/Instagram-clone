@@ -133,3 +133,32 @@ body {
     width: 100%!important;
   }
 }
+/* filters */
+.filterOne {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+.filterTwo {
+  -webkit-filter: contrast(50%) hue-rotate(10deg);
+  filter: contrast(50%) hue-rotate(10deg);
+}
+
+.filterThree {
+  -webkit-filter: sepia(60%);
+  filter: sepia(60%);
+}
+
+.filterFour {
+  -webkit-filter: grayscale(100%) contrast(110%) brightness(130%);
+  filter: grayscale(100%) contrast(110%) brightness(130%);
+}
+.imgContainer {
+  padding: 20px;
+  height: 100px;
+  width: 100px;
+  background-size: cover;
+  color: white;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.329);
+  border-radius: 15px;
+}
