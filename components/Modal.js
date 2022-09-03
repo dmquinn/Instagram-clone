@@ -14,7 +14,6 @@ const Modal = () => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [zoom, setZoom] = useState(1);
-  const [croppedImage, setCroppedImage] = useState(null);
   const [mainFilter, setMainFilter] = useState(null);
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
@@ -30,7 +29,7 @@ const Modal = () => {
       console.error(e);
     }
     setFiltersOpen(!filtersOpen);
-  }, [croppedAreaPixels]);
+  }, [croppedAreaPixels, filtersOpen, image]);
 
   const handleChange = (e) => {
     if (e.target.files.length) {
@@ -42,13 +41,7 @@ const Modal = () => {
       setImage(URL.createObjectURL(e.target.files[0]));
     }
   };
-  const handleOpen = (e) => {
-    filtersOpen ? setFiltersOpen(false) : setFiltersOpen(true);
-    console.log(filtersOpen);
-  };
-  useEffect(() => {
-    console.log(filtersOpen);
-  }, [filtersOpen]);
+
   return (
     <Transition.Root show={modalOpen} as={Fragment}>
       <Dialog

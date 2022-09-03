@@ -16,6 +16,7 @@ const Filters = ({ image, filtersOpen, setFiltersOpen, setMainFilter }) => {
           leaveTo="opacity-0"
         >
           <div className="second relative bg-white rounded-lg w-full md:max-w-4xl mx-auto -mt-[100px] ml-[330px] h-[500px] shadow-lg z-[200]">
+            <h1 className="p-3 font-semibold w-full border-b">Edit</h1>
             <div className="grid grid-cols-5">
               <img className="object-cover h-[500px] col-span-3" src={image} />{" "}
               <div className="col-span-2 h-full bg-white">

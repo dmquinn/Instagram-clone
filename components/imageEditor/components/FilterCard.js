@@ -3,12 +3,12 @@ import React from "react";
 const FilterCard = ({ card, image, setMainFilter }) => {
   const handleClick = (e) => {
     setMainFilter(e.target.className);
+    console.log(image);
   };
   return (
     <div
-      className={card.className}
+      className={`p-2 cursor-pointer ${card.className}`}
       onClick={(e) => handleClick(e)}
-      style={{ padding: "20px", cursor: "pointer" }}
     >
       <div
         className="imgContainer"
