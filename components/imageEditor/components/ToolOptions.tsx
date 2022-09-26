@@ -12,7 +12,7 @@ const ToolOptions = ({
       className="px-20"
     >
       <div className="sliderContainer">
-        <p className="text-white p-1">Contrast</p>
+        <p className="text-plain-white p-1">Contrast</p>
         <input
           min="20"
           max="200"
@@ -23,7 +23,7 @@ const ToolOptions = ({
       </div>
 
       <div className="sliderContainer">
-        <p className="text-white p-1">Saturation</p>
+        <p className="text-plain-white p-1">Saturation</p>
 
         <input
           min="20"
@@ -35,7 +35,7 @@ const ToolOptions = ({
       </div>
 
       <div className="sliderContainer">
-        <p className="text-white p-1">Brightness</p>
+        <p className="text-plain-white p-1">Brightness</p>
 
         <input
           min="20"

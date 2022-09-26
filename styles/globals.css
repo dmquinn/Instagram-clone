@@ -162,3 +162,55 @@ body {
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.329);
   border-radius: 15px;
 }
+.border {
+  border-color: rgba(128, 128, 128, 0.475) !important;
+}
+.modalOpen {
+  animation: blowUpContent 0.2s linear;
+}
+
+.modalImage { 
+  background-size: cover;
+  background: linear-gradient(rgba(0, 0, 0, 0) 0%, #141414 100%);
+}
+
+@keyframes blowUpContent {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+
+  99.9% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+.filtersOpen {
+  animation: expandFilterTray 0.2s linear forwards;
+}
+
+.modlaImage {
+  background-size: cover;
+  background: linear-gradient(rgba(0, 0, 0, 0) 0%, #141414 100%);
+}
+.reactEasyCrop_Container {
+  background: black !important; 
+}
+
+@keyframes expandFilterTray {
+  0% {
+    width: 0px;
+  }
+
+  80.9% {
+    width: 80%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}

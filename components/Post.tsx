@@ -19,7 +19,6 @@ import { db } from "../firebase/firebase";
 const Post = ({ post }) => {
   const { data: session } = useSession();
   const [comment, setComment] = useState("");
-  console.log(post);
   const sendComment = async (e) => {
     e.preventDefault();
     const commentToSend = comment;
@@ -35,7 +34,7 @@ const Post = ({ post }) => {
     );
   };
   return (
-    <div className="bg-white my-7 border rounded-lg">
+    <div className="bg-plain-white my-7 border rounded-lg">
       <div className="flex items-center p-5">
         <img
           src={post.profileImg}
@@ -77,7 +76,7 @@ const Post = ({ post }) => {
               type="submit"
               disabled={!comment.trim()}
               onClick={sendComment}
-              className="font-semibold text-blue-400"
+              className="font-semibold text-link-blue"
             >
               Post
             </button>

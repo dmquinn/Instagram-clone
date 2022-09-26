@@ -20,7 +20,7 @@ const Header = ({ users }) => {
 
   const router = useRouter();
   return (
-    <div className="border-b bg-white sticky top-0 z-50 py-4">
+    <div className="border-b bg-plain-white sticky top-0 z-50 py-4">
       {" "}
       <div className="flex justify-between max-w-5xl mx-5 lg:mx-auto">
         <div
