@@ -3,6 +3,8 @@ import Feed from "../components/Feed";
 import Header from "../components/Header";
 import { useState, useEffect } from "react";
 import Modal from "../components/Modal";
+import Chat from "../components/Chat";
+
 import { userImgs } from "../data/userData";
 
 export default function Home() {
@@ -41,9 +43,11 @@ export default function Home() {
         <title>Social Media</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Chat users={users} />
+
       <Header users={users} />
       <Feed users={users} />
-      <Modal />
+      <Modal users={users} />
     </div>
   );
 }

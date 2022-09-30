@@ -1,6 +1,19 @@
 import FilterList from "./FilterList";
 
-const Filters = ({ image, filtersOpen, setMainFilter, mainFilter }) => {
+const Filters = ({
+  image,
+  filtersOpen,
+  setMainFilter,
+  mainFilter,
+  captionsOpen,
+  setFiltersOpen,
+  setCaptionsOpen,
+}) => {
+  const handleClick = () => {
+    setFiltersOpen(false);
+    setCaptionsOpen(true);
+    console.log("captionsOpen", captionsOpen);
+  };
   return (
     <>
       {filtersOpen && (
@@ -11,6 +24,15 @@ const Filters = ({ image, filtersOpen, setMainFilter, mainFilter }) => {
               : "filtersOpen bg-plain-white mt-[90px] h-[500px] -ml-5"
           }
         >
+          {" "}
+          <div className="flex justify-end">
+            <h1
+              onClick={handleClick}
+              className="cursor-pointer font-bold text-link-blue right-10 p-3"
+            >
+              Next
+            </h1>
+          </div>
           <FilterList
             image={image}
             setMainFilter={setMainFilter}

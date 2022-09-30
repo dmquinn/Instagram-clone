@@ -7,7 +7,6 @@ module.exports = {
   theme: {
     extend: {},
     colors: {
-      "netflix-black": "#141414",
       "modal-gray": "#1b1b1b",
       "link-blue": "#60a5fa",
       "plain-white": "#ffffff",

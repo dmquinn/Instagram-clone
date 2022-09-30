@@ -3,16 +3,16 @@ import { useRecoilState } from "recoil";
 import { mainFilterState } from "../atoms/MainFilterAtom";
 import { modalState } from "../atoms/modalAtom";
 import getCroppedImg from "./cropImage";
-
 import Cropper from "react-easy-crop";
 import Filters from "./imageEditor/components/Filters";
+import Caption from "./Caption";
 
-const Modal = () => {
+const Modal = ({ users }) => {
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [captionsOpen, setCaptionsOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
@@ -25,26 +25,19 @@ const Modal = () => {
 
   const showCroppedImage = useCallback(async () => {
     try {
-      const croppedImage = await getCroppedImg(
-        imageSrc,
-        croppedAreaPixels,
-        rotation
-      );
+      const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
       setCroppedImage(croppedImage);
       setImageSrc(null);
       setFiltersOpen(true);
     } catch (e) {
       console.error(e);
     }
-  }, [imageSrc, croppedAreaPixels, rotation]);
+  }, [imageSrc, croppedAreaPixels]);
 
   const onFileChange = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       let imageDataUrl = await readFile(file);
-
-      // apply rotation if needed
-
       setImageSrc(imageDataUrl);
     }
   };
@@ -64,17 +57,19 @@ const Modal = () => {
                 >
                   {" "}
                   <div className="flex text-center">
-                    {!imageSrc ? (
-                      <h1 className="font-semibold w-full h-9 border-b py-2">
-                        Create new Post
-                      </h1>
+                    {imageSrc ? (
+                      <h1 className="font-semibold w-full h-9 py-2">Crop</h1>
+                    ) : croppedImage ? (
+                      <h1 className="font-semibold w-full h-9">Edit</h1>
                     ) : (
-                      <h1 className="font-semibold w-full h-9">Crop</h1>
+                      <h1 className="font-semibold w-full h-9 border-b py-2">
+                        Create New Post
+                      </h1>
                     )}
                     {imageSrc && (
                       <h1
                         onClick={showCroppedImage}
-                        className="cursor-pointer font-bold text-link-blue right-10"
+                        className="cursor-pointer font-bold text-link-blue right-10 p-3"
                       >
                         Next
                       </h1>
@@ -117,14 +112,30 @@ const Modal = () => {
                   hidden
                   ref={filePickerRef}
                   onChange={onFileChange}
-                />{" "}
-                )
-                <Filters
-                  image={croppedImage}
-                  filtersOpen={filtersOpen}
-                  setMainFilter={setMainFilter}
-                  mainFilter={mainFilter}
                 />
+
+                {filtersOpen ? (
+                  <Filters
+                    image={croppedImage}
+                    filtersOpen={filtersOpen}
+                    setMainFilter={setMainFilter}
+                    mainFilter={mainFilter}
+                    captionsOpen={captionsOpen}
+                    setFiltersOpen={setFiltersOpen}
+                    setCaptionsOpen={setCaptionsOpen}
+                  />
+                ) : captionsOpen ? (
+                  <Caption
+                    captionsOpen={captionsOpen}
+                    img={croppedImage}
+                    setImageSrc={setImageSrc}
+                    setModalOpen={setModalOpen}
+                    setCroppedImage={setCroppedImage}
+                    setCaptionsOpen={setCaptionsOpen}
+                  />
+                ) : (
+                  <div />
+                )}
               </>
             </div>
           </div>
