@@ -45,7 +45,7 @@ const Caption = ({
 
     await uploadBytes(storageRef, img).then(async (snapshot) => {
       const downloadURL = await getDownloadURL(storageRef);
-      console.log("uploaded successfully");
+      console.log("uploaded successfully", downloadURL);
       await updateDoc(doc(db, "posts", docRef.id), {
         // image: downloadURL,
         // console.log("okay here too")

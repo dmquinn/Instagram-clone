@@ -11,6 +11,7 @@ module.exports = {
       "link-blue": "#60a5fa",
       "plain-white": "#ffffff",
       "modal-back": "#00000088",
+      searchBar: "#efefef",
     },
   },
   plugins: [],

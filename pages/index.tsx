@@ -43,7 +43,7 @@ export default function Home() {
         <title>Social Media</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Chat users={users} />
+      {/* <Chat users={users} /> */}
 
       <Header users={users} />
       <Feed users={users} />

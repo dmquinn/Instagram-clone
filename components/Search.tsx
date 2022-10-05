@@ -5,7 +5,7 @@ const Search = ({ users }) => {
   return (
     <form action="#" className="px-12">
       <div className="hidden md:flex relative">
-        <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+        <div className="inline-flex items-center justify-left px-4 absolute left-0 top-0 h-full w-10 text-gray-400 bg-searchBar w-60 rounded-lg">
           <svg
             className="h-6 w-6"
             fill="none"
